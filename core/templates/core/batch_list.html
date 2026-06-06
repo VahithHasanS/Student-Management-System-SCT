@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-3 mb-md-0">Batches</h2>
+    <a href="{% url 'batch_add' %}" class="btn btn-primary rounded-pill shadow-sm">
+        <i class="fas fa-plus me-1"></i> Add Batch
+    </a>
+</div>
+
+<div class="card glass-card border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light bg-opacity-10">
+                    <tr>
+                        <th class="px-4 py-3 border-bottom-0">Name</th>
+                        <th class="py-3 border-bottom-0">Start Year</th>
+                        <th class="py-3 border-bottom-0">Department</th>
+                        <th class="px-4 py-3 border-bottom-0 text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for batch in batches %}
+                    <tr class="border-bottom border-light border-opacity-10">
+                        <td class="px-4 py-3 fw-semibold">{{ batch.name }}</td>
+                        <td class="py-3">{{ batch.start_year }}</td>
+                        <td class="py-3"><span class="badge bg-secondary bg-opacity-50 rounded-pill px-3">{{ batch.department.name }}</span></td>
+                        <td class="px-4 py-3 text-end">
+                            <div class="btn-group shadow-sm">
+                                <a href="{% url 'batch_edit' batch.id %}" class="btn btn-sm btn-warning" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'batch_delete' batch.id %}" class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-5 opacity-75">
+                            <i class="fas fa-layer-group fa-3x mb-3 d-block"></i>
+                            No batches found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

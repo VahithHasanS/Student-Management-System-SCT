@@ -1,0 +1,4 @@
+Django
+mongoengine
+pymongo
+python-dotenv

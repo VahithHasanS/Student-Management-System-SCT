@@ -1,0 +1,273 @@
+:root {
+    /* Light Mode Variables */
+    --bg-primary: #f0f2f5;
+    --bg-secondary: #ffffff;
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    
+    --sidebar-bg: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    --sidebar-text: #ffffff;
+    --sidebar-hover: rgba(255, 255, 255, 0.2);
+    
+    --card-hover-transform: translateY(-5px);
+    
+    --accent-primary: #667eea;
+    --accent-success: #38b259;
+    --accent-danger: #e53e3e;
+    --accent-warning: #ecc94b;
+    --accent-info: #4299e1;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode Variables */
+    --bg-primary: #1a202c;
+    --bg-secondary: #2d3748;
+    --text-primary: #e2e8f0;
+    --text-secondary: #cbd5e0;
+    --text-muted: #a0aec0;
+    
+    --glass-bg: rgba(45, 55, 72, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    
+    --sidebar-bg: linear-gradient(135deg, rgba(44, 62, 80, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%);
+    --sidebar-text: #e2e8f0;
+    --sidebar-hover: rgba(255, 255, 255, 0.1);
+    
+    --accent-primary: #7f9cf5;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+}
+
+/* Glassmorphism Utilities */
+.glass-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden; /* For inner borders if any */
+}
+
+.glass-card:hover {
+    transform: var(--card-hover-transform);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+}
+
+[data-theme="dark"] .glass-card:hover {
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* Sidebar Styling */
+.glass-sidebar {
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-right: 1px solid var(--glass-border);
+    min-height: 100vh;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    color: var(--sidebar-text);
+}
+
+.glass-sidebar a {
+    color: var(--sidebar-text);
+    text-decoration: none;
+    padding: 12px 20px;
+    display: block;
+    transition: 0.3s;
+    border-radius: 8px;
+    margin: 4px 12px;
+}
+
+.glass-sidebar a:hover {
+    background: var(--sidebar-hover);
+    padding-left: 25px;
+}
+
+/* Navbar Styling */
+.glass-navbar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] .glass-navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Typography and Text Adjustments for Dark/Light Mode */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Override Bootstrap Defaults for Glass Theme */
+.card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-primary);
+}
+
+.card-body {
+    color: var(--text-primary);
+}
+
+/* Table Styling for Glassmorphism */
+.table {
+    color: var(--text-primary);
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--text-primary);
+    --bs-table-striped-bg: rgba(255,255,255,0.05);
+    --bs-table-hover-bg: rgba(255,255,255,0.1);
+    --bs-table-border-color: var(--glass-border);
+}
+
+[data-theme="dark"] .table {
+    --bs-table-striped-bg: rgba(0,0,0,0.1);
+    --bs-table-hover-bg: rgba(0,0,0,0.2);
+}
+
+.table-hover > tbody > tr:hover > * {
+    color: var(--text-primary);
+}
+
+/* Forms */
+.form-control, .form-select {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+[data-theme="dark"] .form-control, [data-theme="dark"] .form-select {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .form-control:focus, [data-theme="dark"] .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(127, 156, 245, 0.25);
+}
+
+/* Buttons inside Glass */
+.btn-primary {
+    background-color: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+.btn-primary:hover {
+    background-color: #5a67d8;
+    border-color: #5a67d8;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.theme-toggle-btn:hover {
+    transform: rotate(15deg) scale(1.1);
+    background: var(--glass-border);
+}
+
+/* Background overlay for login/register pages */
+.auth-bg {
+    background: url('https://source.unsplash.com/random/1920x1080/?university,campus,library') no-repeat center center fixed;
+    background-size: cover;
+}
+.auth-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: -1;
+}
+
+/* Specific Card Stats Overrides */
+.card-stats {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+}
+
+.card-stats i {
+    color: var(--text-primary);
+    opacity: 0.3;
+}
+/* Ensure the colored backgrounds in index cards are subtle in glass */
+.card-stats.bg-primary { border-top: 4px solid var(--accent-primary) !important; }
+.card-stats.bg-success { border-top: 4px solid var(--accent-success) !important; }
+.card-stats.bg-info { border-top: 4px solid var(--accent-info) !important; }
+.card-stats.bg-warning { border-top: 4px solid var(--accent-warning) !important; }
+
+/* Dashboard text overrides for card-stats */
+.card-stats .text-white { color: var(--text-primary) !important; }
+
+/* List Groups */
+.list-group-item {
+    background-color: transparent;
+    border-color: var(--glass-border);
+    color: var(--text-primary);
+}
+
+/* Modals */
+.modal-content {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+}
+.modal-header {
+    border-bottom-color: var(--glass-border);
+}
+.modal-footer {
+    border-top-color: var(--glass-border);
+}

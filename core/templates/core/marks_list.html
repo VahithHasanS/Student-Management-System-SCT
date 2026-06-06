@@ -1,0 +1,93 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-3 mb-md-0">Marks & Results</h2>
+    <div class="d-flex gap-2">
+        <a href="{% url 'marks_add' %}" class="btn btn-primary rounded-pill shadow-sm">
+            <i class="fas fa-plus me-1"></i> Add Marks
+        </a>
+        <a href="{% url 'export_marks' %}" class="btn btn-success rounded-pill shadow-sm">
+            <i class="fas fa-download me-1"></i> Export CSV
+        </a>
+    </div>
+</div>
+
+<!-- Department Filter -->
+<div class="card glass-card mb-4 border-0">
+    <div class="card-body p-4">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-medium opacity-75">Filter by Department</label>
+                <select name="department" class="form-select shadow-sm" onchange="this.form.submit()">
+                    <option value="">All Departments</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}" {% if selected_dept and selected_dept.id == dept.id %}selected{% endif %}>
+                        {{ dept.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card glass-card border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light bg-opacity-10">
+                    <tr>
+                        <th class="px-4 py-3 border-bottom-0">Student Name</th>
+                        <th class="py-3 border-bottom-0">Roll Number</th>
+                        <th class="py-3 border-bottom-0">Subject</th>
+                        <th class="py-3 border-bottom-0">Score</th>
+                        <th class="py-3 border-bottom-0">Attendance %</th>
+                        <th class="py-3 border-bottom-0">Passing Marks</th>
+                        <th class="py-3 border-bottom-0">Status</th>
+                        <th class="px-4 py-3 border-bottom-0 text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mark in marks_list %}
+                    <tr class="border-bottom border-light border-opacity-10">
+                        <td class="px-4 py-3 fw-semibold">{{ mark.student.name }}</td>
+                        <td class="py-3 opacity-75">{{ mark.student.roll_number }}</td>
+                        <td class="py-3">
+                            <div class="fw-medium">{{ mark.subject.name }}</div>
+                            <small class="opacity-75">{{ mark.subject.code }}</small>
+                        </td>
+                        <td class="py-3 fw-bold">{{ mark.score }} <span class="fw-normal opacity-50">/ {{ mark.subject.max_marks }}</span></td>
+                        <td class="py-3">{{ mark.attendance|default:"N/A" }}</td>
+                        <td class="py-3">{{ mark.subject.passing_marks }}</td>
+                        <td class="py-3">
+                            {% if mark.passed %}
+                            <span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i> Passed</span>
+                            {% else %}
+                            <span class="badge bg-danger rounded-pill px-3"><i class="fas fa-times-circle me-1"></i> Failed</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-3 text-end">
+                            <div class="btn-group shadow-sm">
+                                <a href="{% url 'marks_edit' mark.id %}" class="btn btn-sm btn-warning" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'marks_delete' mark.id %}" class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5 opacity-75">
+                            <i class="fas fa-clipboard-list fa-3x mb-3 d-block"></i>
+                            No marks records found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

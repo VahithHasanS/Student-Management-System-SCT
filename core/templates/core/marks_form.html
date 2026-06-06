@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card glass-container border-0 shadow-lg mt-4">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0 text-center">
+                <h4 class="fw-bold mb-0">{{ title }}</h4>
+                <p class="text-muted small mt-1">{{ department.name }}</p>
+            </div>
+            <div class="card-body p-4 p-md-5 pt-3">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="dept_id" value="{{ department.id }}">
+                    {% for field in form %}
+                    <div class="mb-4 position-relative">
+                        <label class="form-label fw-medium ms-1">{{ field.label }}</label>
+                        {% if field.errors %}
+                        <div class="text-danger small fw-bold mb-1 ms-1">{{ field.errors.0 }}</div>
+                        {% endif %}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="d-flex gap-3 mt-5">
+                        <button type="submit" class="btn btn-primary flex-grow-1 rounded-pill fw-bold shadow-sm py-2">Save Marks</button>
+                        <a href="{% url 'marks_list' %}" class="btn btn-secondary flex-grow-1 rounded-pill fw-bold shadow-sm py-2">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            if (field.type !== 'checkbox' && field.type !== 'file' && field.type !== 'hidden') {
+                field.classList.add('form-control', 'shadow-none');
+                field.style.transition = 'all 0.3s ease';
+            }
+        });
+    });
+</script>
+{% endblock %}

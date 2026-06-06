@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="d-flex align-items-center mb-4">
+    <div class="bg-primary bg-opacity-25 rounded-circle p-3 me-3 text-primary d-inline-flex">
+        <i class="fas fa-search"></i>
+    </div>
+    <h2 class="fw-bold mb-0">Search Results for "<span class="text-primary">{{ query }}</span>"</h2>
+</div>
+
+{% if students %}
+<div class="card glass-card border-0 mb-4">
+    <div class="card-header bg-transparent border-0 pt-4 pb-2">
+        <h5 class="fw-bold text-info mb-0"><i class="fas fa-user-graduate me-2"></i> Students ({{ students|length }})</h5>
+    </div>
+    <div class="card-body p-0 pb-3">
+        <div class="list-group list-group-flush bg-transparent">
+            {% for student in students %}
+            <div class="list-group-item bg-transparent border-light border-opacity-10 py-3 px-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="{% url 'student_detail' student.id %}" class="fw-bold text-decoration-none d-block mb-1 fs-5">{{ student.name }}</a>
+                    <span class="opacity-75 small"><i class="fas fa-id-badge me-1"></i> {{ student.roll_number }}</span>
+                </div>
+                <span class="badge bg-secondary bg-opacity-50 rounded-pill px-3 py-2">{{ student.department.name }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if subjects %}
+<div class="card glass-card border-0 mb-4">
+    <div class="card-header bg-transparent border-0 pt-4 pb-2">
+        <h5 class="fw-bold text-success mb-0"><i class="fas fa-book me-2"></i> Subjects ({{ subjects|length }})</h5>
+    </div>
+    <div class="card-body p-0 pb-3">
+        <div class="list-group list-group-flush bg-transparent">
+            {% for subject in subjects %}
+            <div class="list-group-item bg-transparent border-light border-opacity-10 py-3 px-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-bold d-block mb-1 fs-5">{{ subject.name }}</span>
+                    <span class="badge bg-primary bg-opacity-75 rounded-pill px-2 me-2">{{ subject.code }}</span>
+                </div>
+                <span class="badge bg-secondary bg-opacity-50 rounded-pill px-3 py-2">{{ subject.department.name }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if departments %}
+<div class="card glass-card border-0 mb-4">
+    <div class="card-header bg-transparent border-0 pt-4 pb-2">
+        <h5 class="fw-bold text-primary mb-0"><i class="fas fa-building me-2"></i> Departments ({{ departments|length }})</h5>
+    </div>
+    <div class="card-body p-0 pb-3">
+        <div class="list-group list-group-flush bg-transparent">
+            {% for dept in departments %}
+            <div class="list-group-item bg-transparent border-light border-opacity-10 py-3 px-4 d-flex justify-content-between align-items-center">
+                <span class="fw-bold fs-5">{{ dept.name }}</span>
+                <span class="badge bg-primary bg-opacity-75 rounded-pill px-3 py-2">{{ dept.code }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if not students and not subjects and not departments %}
+<div class="card glass-card border-0 bg-warning bg-opacity-10 mt-4 text-center py-5">
+    <div class="card-body">
+        <div class="text-warning mb-3">
+            <i class="fas fa-search-minus fa-4x opacity-75"></i>
+        </div>
+        <h4 class="fw-bold text-warning mb-2">No results found</h4>
+        <p class="opacity-75 mb-0">We couldn't find anything matching "{{ query }}". Try adjusting your search term.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

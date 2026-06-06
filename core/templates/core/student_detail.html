@@ -1,0 +1,122 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card glass-card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                <h4 class="fw-bold mb-0 d-flex align-items-center">
+                    <div class="bg-primary bg-opacity-25 rounded-circle p-3 me-3 text-primary d-inline-flex">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    Student Details: {{ student.name }}
+                </h4>
+                <div class="btn-group shadow-sm">
+                    <a href="{% url 'student_list' %}" class="btn btn-secondary rounded-start-pill"><i class="fas fa-arrow-left me-1"></i> Back</a>
+                    <a href="{% url 'marks_add' %}?dept_id={{ student.department.id }}" class="btn btn-primary rounded-end-pill"><i class="fas fa-plus me-1"></i> Add Marks</a>
+                </div>
+            </div>
+            
+            <div class="card-body p-4 p-md-5">
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="glass-container p-4 h-100 border-0 bg-primary bg-opacity-10">
+                            <h6 class="text-uppercase fw-bold opacity-50 mb-3"><i class="fas fa-info-circle me-2"></i> Academic Info</h6>
+                            <p class="mb-2"><strong class="fw-semibold">Roll Number:</strong> <span class="ms-2 opacity-75">{{ student.roll_number }}</span></p>
+                            <p class="mb-2"><strong class="fw-semibold">Department:</strong> <span class="badge bg-secondary bg-opacity-50 rounded-pill ms-2 px-3">{{ student.department.name }}</span></p>
+                            <p class="mb-0"><strong class="fw-semibold">Enrollment Year:</strong> <span class="ms-2 opacity-75">{{ student.enrollment_year }}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="glass-container p-4 h-100 border-0 bg-info bg-opacity-10">
+                            <h6 class="text-uppercase fw-bold opacity-50 mb-3"><i class="fas fa-address-card me-2"></i> Contact Info</h6>
+                            <p class="mb-2"><strong class="fw-semibold">Email:</strong> <span class="ms-2 opacity-75">{{ student.email }}</span></p>
+                            <p class="mb-2"><strong class="fw-semibold">Phone:</strong> <span class="ms-2 opacity-75">{{ student.phone|default:"-" }}</span></p>
+                            <p class="mb-0"><strong class="fw-semibold">Address:</strong> <span class="ms-2 opacity-75">{{ student.address|default:"-" }}</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-end mb-3">
+                    <h5 class="fw-bold mb-0">Academic Performance</h5>
+                </div>
+                
+                <div class="alert alert-info glass-card border-0 bg-info bg-opacity-10 mb-4 d-flex align-items-center flex-wrap">
+                    <div class="me-4 mb-2 mb-md-0">
+                        <strong class="d-block text-uppercase small opacity-75 mb-1">Summary</strong>
+                        <span>Total Subjects: <b class="fs-5">{{ total_subjects }}</b></span>
+                        <span class="mx-3 text-muted">|</span>
+                        <span class="text-success"><i class="fas fa-check-circle"></i> Passed: <b>{{ passed_count }}</b></span>
+                        <span class="mx-3 text-muted">|</span>
+                        <span class="text-danger"><i class="fas fa-times-circle"></i> Failed: <b>{{ failed_count }}</b></span>
+                    </div>
+                    
+                    <div class="flex-grow-1 min-w-200">
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span class="fw-medium">Pass Percentage</span>
+                            <span class="fw-bold">{% widthratio passed_count total_subjects 100 %}%</span>
+                        </div>
+                        <div class="progress" style="height: 10px; background-color: rgba(0,0,0,0.1);">
+                            <div class="progress-bar bg-success rounded-pill" role="progressbar" 
+                                style="width: {% widthratio passed_count total_subjects 100 %}%"
+                                aria-valuenow="{% widthratio passed_count total_subjects 100 %}" 
+                                aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 border border-light border-opacity-10 rounded overflow-hidden">
+                        <thead class="bg-light bg-opacity-10">
+                            <tr>
+                                <th class="px-4 py-3 border-bottom-0">Subject Code</th>
+                                <th class="py-3 border-bottom-0">Subject Name</th>
+                                <th class="py-3 border-bottom-0 text-center">Score / Max</th>
+                                <th class="py-3 border-bottom-0 text-center">Passing</th>
+                                <th class="py-3 border-bottom-0 text-center">Grade</th>
+                                <th class="py-3 border-bottom-0 text-center">Attendance</th>
+                                <th class="px-4 py-3 border-bottom-0 text-end">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mark in marks_data %}
+                            <tr class="border-bottom border-light border-opacity-10">
+                                <td class="px-4 py-3 fw-medium"><span class="badge bg-primary bg-opacity-75 rounded-pill px-3">{{ mark.subject.code }}</span></td>
+                                <td class="py-3 fw-semibold">{{ mark.subject.name }}</td>
+                                <td class="py-3 text-center fw-bold">
+                                    {{ mark.score }} <span class="fw-normal opacity-50">/ {{ mark.max_marks }}</span>
+                                </td>
+                                <td class="py-3 text-center opacity-75">{{ mark.passing_marks }}</td>
+                                <td class="py-3 text-center">
+                                    {% if mark.passed %}
+                                    <span class="badge bg-success bg-opacity-25 text-success rounded-circle p-2" style="width:32px; height:32px;">{{ mark.subject.get_grade }}</span>
+                                    {% else %}
+                                    <span class="badge bg-danger bg-opacity-25 text-danger rounded-circle p-2" style="width:32px; height:32px;">F</span>
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 text-center">{{ mark.attendance|default:"-" }}{% if mark.attendance %}%{% endif %}</td>
+                                <td class="px-4 py-3 text-end">
+                                    {% if mark.passed %}
+                                    <span class="badge bg-success rounded-pill px-3 py-2"><i class="fas fa-check me-1"></i> Passed</span>
+                                    {% else %}
+                                    <span class="badge bg-danger rounded-pill px-3 py-2"><i class="fas fa-times me-1"></i> Failed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center py-5 opacity-75">
+                                    <i class="fas fa-clipboard-list fa-3x mb-3 d-block"></i>
+                                    No marks recorded yet for this student.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
