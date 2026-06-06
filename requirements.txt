@@ -2,3 +2,5 @@ Django
 mongoengine
 pymongo
 python-dotenv
+djongo
+dnspython=
