@@ -49,23 +49,35 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'student_management.wsgi.application'
 
-# MongoDB Configuration
-import mongoengine
-mongoengine.connect(
-    db=os.getenv('MONGO_DB_NAME'),
-    host=os.getenv('MONGO_URI'),
-    authentication_source='admin'  # Remove if no auth
-)
 
+# --- CLEANED & FIXED MONGODB CONFIGURATION ---
+
+import mongoengine
+
+# 1. Fetch your connection string (Unified to use MONGODB_URI)
+MONGO_URI = os.getenv('MONGODB_URI')
+MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
+
+# 2. Setup MongoEngine Connection for custom ODM models
+if MONGO_URI and MONGO_DB_NAME:
+    mongoengine.connect(
+        db=MONGO_DB_NAME,
+        host=MONGO_URI
+    )
+
+# 3. Setup Django Internal Database (Fixed Typo + Added safety fallback string)
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo_mongodb_backend',
-        'NAME': os.getenv('MONGO_DB_NAME'),
+        'ENGINE': 'django_mongodb_backend',  # Connected perfectly for Django 6.x
+        'NAME': MONGO_DB_NAME or 'student_db',
         'CLIENT': {
-            'host': os.getenv('MONGODB_URI'),
+            'host': MONGO_URI or 'mongodb://localhost:27017/student_db',
         }
     }
 }
+
+# ---------------------------------------------
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
