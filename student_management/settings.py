@@ -101,3 +101,5 @@ LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Silence the MongoDB field type warning during build steps
+SILENCED_SYSTEM_CHECKS = ['mongodb.fields.auto.E001']
