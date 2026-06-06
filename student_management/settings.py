@@ -59,9 +59,8 @@ mongoengine.connect(
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
+        'ENGINE': 'djongo_mongodb_backend',
         'NAME': os.getenv('MONGO_DB_NAME'),
-        'ENFORCE_SCHEMA': False,
         'CLIENT': {
             'host': os.getenv('MONGODB_URI'),
         }
