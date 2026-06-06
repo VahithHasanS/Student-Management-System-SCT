@@ -57,11 +57,14 @@ mongoengine.connect(
     authentication_source='admin'  # Remove if no auth
 )
 
-# Dummy database for Django (not used)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': os.getenv('MONGO_DB_NAME'),
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': os.getenv('MONGODB_URI'),
+        }
     }
 }
 
