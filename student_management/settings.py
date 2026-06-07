@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -52,28 +53,11 @@ WSGI_APPLICATION = 'student_management.wsgi.application'
 
 # --- CLEANED & FIXED MONGODB CONFIGURATION ---
 
-import mongoengine
-
-# 1. Fetch your connection string (Unified to use MONGODB_URI)
-MONGO_URI = os.getenv('MONGODB_URI')
-MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
-
-# 2. Setup MongoEngine Connection for custom ODM models
-if MONGO_URI and MONGO_DB_NAME:
-    mongoengine.connect(
-        db=MONGO_DB_NAME,
-        host=MONGO_URI
-    )
-
-# 3. Setup Django Internal Database (Fixed Typo + Added safety fallback string)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django_mongodb_backend',  # Connected perfectly for Django 6.x
-        'NAME': MONGO_DB_NAME or 'student_db',
-        'CLIENT': {
-            'host': MONGO_URI or 'mongodb://localhost:27017/student_db',
-        }
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
 
 # ---------------------------------------------
