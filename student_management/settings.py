@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import dj_database_url
 
 load_dotenv()
 
@@ -51,16 +50,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'student_management.wsgi.application'
 
 
-# --- CLEANED & FIXED MONGODB CONFIGURATION ---
-
+# --- MONGODB CONFIGURATION (django-mongodb-backend) ---
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django_mongodb_backend',
+        'NAME': os.environ.get('MONGODB_NAME', 'student_db'),
+        'CLIENT': {
+            'host': os.environ.get('MONGODB_URI', 'mongodb://localhost:27017'),
+        }
+    }
 }
-
-# ---------------------------------------------
+# -------------------------------------------------------
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -77,6 +77,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = BASE_DIR / 'staticfiles'               # <-- required for collectstatic
 DEFAULT_AUTO_FIELD = 'django_mongodb_backend.fields.ObjectIdAutoField'
 
 # Authentication settings
