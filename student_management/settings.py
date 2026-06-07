@@ -51,15 +51,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'student_management.wsgi.application'
 
 
-# --- MONGODB CONFIGURATION (django-mongodb-backend) ---
+
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
         conn_max_age=600
     )
 }
-# -------------------------------------------------------
 
+# --- MONGODB CONFIGURATION ---
+# MongoEngine connection for custom models (Department, Student, etc.)
+
+import mongoengine
+MONGO_URI = os.getenv('MONGODB_URI')  # same Atlas connection string
+if MONGO_URI:
+    mongoengine.connect(host=MONGO_URI)
+    
+# -------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
