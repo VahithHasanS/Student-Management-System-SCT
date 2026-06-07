@@ -3,3 +3,4 @@ python-dotenv==1.2.2
 dnspython==2.8.0
 dj-database-url
 psycopg2-binary
+mongoengine
