@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -52,13 +53,10 @@ WSGI_APPLICATION = 'student_management.wsgi.application'
 
 # --- MONGODB CONFIGURATION (django-mongodb-backend) ---
 DATABASES = {
-    'default': {
-        'ENGINE': 'django_mongodb_backend',
-        'NAME': "student_management_db",
-        'CLIENT': {
-            'host': "mongodb+srv://Shajahan_Access_2:Howkey%402011@tpcbr-4-project.ou5hsth.mongodb.net/",
-        }
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600
+    )
 }
 # -------------------------------------------------------
 
@@ -78,7 +76,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = BASE_DIR / 'staticfiles'               # <-- required for collectstatic
-DEFAULT_AUTO_FIELD = 'django_mongodb_backend.fields.ObjectIdAutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Authentication settings
 LOGIN_URL = 'login'
@@ -87,4 +85,3 @@ LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Silence the MongoDB field type warning during build steps
-SILENCED_SYSTEM_CHECKS = ['mongodb.fields.auto.E001']
