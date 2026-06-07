@@ -54,9 +54,9 @@ WSGI_APPLICATION = 'student_management.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django_mongodb_backend',
-        'NAME': os.getenv('MONGO_DB_NAME'),
+        'NAME': os.getenv('MONGODB_NAME', 'student_management_db'),
         'CLIENT': {
-            'host': os.getenv('MONGODB_URI'),
+            'host': os.getenv('MONGODB_URI', 'mongodb://localhost:27017'),
         }
     }
 }
